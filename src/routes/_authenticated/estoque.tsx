@@ -15,12 +15,12 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Package, Plus, Search, Upload, Download, Tag, Barcode, ImageIcon, Loader2 } from "lucide-react";
-import { searchImages, type ImageResult } from "@/lib/image-search.functions";
-import { useServerFn } from "@tanstack/react-start";
+import { Package, Plus, Search, Upload, Download, Tag, Barcode } from "lucide-react";
+import { uploadProductImage } from "@/lib/product-images";
 import { formatBRL } from "@/lib/format";
 import { PageHeader } from "@/components/page-header";
 import { downloadCSV, todayStamp } from "@/lib/csv";
+import { ProductImage } from "@/components/product-image";
 
 export const Route = createFileRoute("/_authenticated/estoque")({
   component: EstoquePage,
@@ -211,8 +211,8 @@ function EstoquePage() {
                   <tr key={p.id} className="border-t border-border/40 hover:bg-primary/5 transition-colors">
                     <td className="p-3">
                       <div className="flex items-center gap-2">
-                        <div className="h-8 w-8 rounded bg-muted grid place-items-center overflow-hidden shrink-0">
-                          {p.image_url ? <img src={p.image_url} alt="" className="h-full w-full object-cover" /> : <Package className="h-3.5 w-3.5 text-muted-foreground" />}
+                        <div className="h-8 w-8 rounded bg-muted overflow-hidden shrink-0">
+                          <ProductImage src={p.image_url} alt={p.name} className="h-full w-full object-cover" containerClassName="h-full w-full" fallback={<Package className="h-3.5 w-3.5 text-muted-foreground" />} />
                         </div>
                         <Link to="/estoque/$id" params={{ id: p.id }} className="font-medium hover:text-primary truncate">
                           {p.name}
@@ -266,27 +266,6 @@ function ProductModal({
   });
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [imgQuery, setImgQuery] = useState("");
-  const [imgResults, setImgResults] = useState<ImageResult[]>([]);
-  const [imgPage, setImgPage] = useState(1);
-  const [imgLoading, setImgLoading] = useState(false);
-  const runSearch = useServerFn(searchImages);
-
-  async function doImageSearch(nextPage = 1) {
-    const q = (imgQuery || form.name).trim();
-    if (!q) return toast.error("Digite um termo ou o nome do produto");
-    setImgLoading(true);
-    try {
-      const r = await runSearch({ data: { query: q, page: nextPage } });
-      setImgResults(nextPage === 1 ? r.results : [...imgResults, ...r.results]);
-      setImgPage(nextPage);
-      if (r.results.length === 0 && nextPage === 1) toast.info("Nenhuma imagem encontrada");
-    } catch {
-      toast.error("Falha na busca de imagens");
-    } finally {
-      setImgLoading(false);
-    }
-  }
 
   const categoriesQ = useQuery(categoriesQuery());
 
@@ -312,12 +291,15 @@ function ProductModal({
 
   async function handleUpload(file: File) {
     setUploading(true);
-    const path = `${crypto.randomUUID()}-${file.name}`;
-    const { error } = await supabase.storage.from("product-images").upload(path, file);
-    if (error) { setUploading(false); return toast.error(error.message); }
-    const { data } = await supabase.storage.from("product-images").createSignedUrl(path, 60 * 60 * 24 * 365);
-    setUploading(false);
-    if (data?.signedUrl) setForm((f) => ({ ...f, image_url: data.signedUrl }));
+    try {
+      const url = await uploadProductImage(file);
+      setForm((f) => ({ ...f, image_url: url }));
+      toast.success("Imagem enviada");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Falha ao enviar a imagem");
+    } finally {
+      setUploading(false);
+    }
   }
 
   async function handleSave() {
@@ -407,51 +389,29 @@ function ProductModal({
             <Input className="mt-1" value={form.new_category} placeholder="Nome da nova categoria" onChange={(e) => setForm({ ...form, new_category: e.target.value })} />
           </div>
           <div className="col-span-2">
-            <Label>Imagem</Label>
-            <div className="flex items-center gap-3 mt-1">
-              {form.image_url && <img src={form.image_url} className="h-12 w-12 rounded object-cover" alt="" />}
-              <label className="flex items-center gap-2 h-10 px-3 rounded-md border border-input bg-input text-sm cursor-pointer hover:border-primary">
-                <Upload className="h-4 w-4" />
-                {uploading ? "Enviando..." : "Enviar imagem"}
-                <input type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleUpload(f); }} />
-              </label>
-            </div>
-            <div className="mt-3 rounded-md border border-border/60 p-3 bg-muted/20">
-              <div className="flex items-center gap-2">
-                <ImageIcon className="h-4 w-4 text-muted-foreground" />
-                <Input
-                  className="h-9"
-                  placeholder={`Buscar imagem (ex.: ${form.name || "arroz 5kg"})`}
-                  value={imgQuery}
-                  onChange={(e) => setImgQuery(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); doImageSearch(1); } }}
-                />
-                <Button type="button" size="sm" variant="outline" onClick={() => doImageSearch(1)} disabled={imgLoading}>
-                  {imgLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
-                </Button>
+            <Label>Imagem do produto</Label>
+            <div className="mt-1 space-y-3 rounded-md border border-border/60 bg-muted/20 p-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="h-16 w-16 overflow-hidden rounded-md border border-border/60 bg-background">
+                  <ProductImage src={form.image_url || null} alt={form.name || "Pré-visualização da imagem"} className="h-full w-full object-cover" containerClassName="h-full w-full" />
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <label className="flex items-center gap-2 h-10 px-3 rounded-md border border-input bg-input text-sm cursor-pointer hover:border-primary">
+                    <Upload className="h-4 w-4" />
+                    {uploading ? "Enviando..." : "Enviar imagem"}
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleUpload(f); }} />
+                  </label>
+                  <Button type="button" variant="outline" size="sm" onClick={() => setForm((f) => ({ ...f, image_url: "" }))} disabled={!form.image_url}>
+                    Remover
+                  </Button>
+                </div>
               </div>
-              {imgResults.length > 0 && (
-                <>
-                  <div className="grid grid-cols-4 gap-2 mt-3">
-                    {imgResults.map((r, i) => (
-                      <button
-                        key={`${r.url}-${i}`}
-                        type="button"
-                        onClick={() => { setForm((f) => ({ ...f, image_url: r.url })); toast.success("Imagem selecionada"); }}
-                        className={`aspect-square rounded overflow-hidden border-2 transition-all bg-white ${form.image_url === r.url ? "border-primary ring-2 ring-primary/30" : "border-border/40 hover:border-primary/60"}`}
-                        title={r.title}
-                      >
-                        <img src={r.thumb} alt={r.title} className="h-full w-full object-contain" loading="lazy" />
-                      </button>
-                    ))}
-                  </div>
-                  <div className="mt-2 text-center">
-                    <Button type="button" size="sm" variant="ghost" onClick={() => doImageSearch(imgPage + 1)} disabled={imgLoading}>
-                      {imgLoading ? "Carregando..." : "Buscar mais"}
-                    </Button>
-                  </div>
-                </>
-              )}
+              <Input
+                placeholder="Ou cole uma URL externa"
+                value={form.image_url}
+                onChange={(e) => setForm((f) => ({ ...f, image_url: e.target.value }))}
+              />
+              <p className="text-xs text-muted-foreground">Use upload local ou cole um link direto para a imagem do produto.</p>
             </div>
           </div>
         </div>

@@ -42,6 +42,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { printReceipt, savePdfReceipt } from "@/lib/print-receipt";
+import { ProductImage } from "@/components/product-image";
 
 type Product = {
   id: string;
@@ -552,12 +553,8 @@ function SearchResults({
           className="text-left p-3 rounded-lg bg-card border border-border hover:border-primary/60 hover:bg-primary/5 transition-all group"
         >
           <div className="flex gap-3">
-            <div className="h-12 w-12 rounded-md bg-muted shrink-0 overflow-hidden grid place-items-center">
-              {p.image_url ? (
-                <img src={p.image_url} alt="" className="h-full w-full object-cover" />
-              ) : (
-                <Package className="h-5 w-5 text-muted-foreground" />
-              )}
+            <div className="h-12 w-12 rounded-md bg-muted shrink-0 overflow-hidden">
+              <ProductImage src={p.image_url} alt={p.name} className="h-full w-full object-cover" containerClassName="h-full w-full" fallback={<Package className="h-5 w-5 text-muted-foreground" />} />
             </div>
             <div className="min-w-0 flex-1">
               <div className="text-sm font-medium truncate group-hover:text-primary">{p.name}</div>

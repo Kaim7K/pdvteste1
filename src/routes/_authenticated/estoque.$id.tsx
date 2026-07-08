@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatBRL, formatDateTime } from "@/lib/format";
 import { ArrowLeft, Package } from "lucide-react";
+import { ProductImage } from "@/components/product-image";
 
 export const Route = createFileRoute("/_authenticated/estoque/$id")({
   component: ProductDetail,
@@ -52,8 +53,8 @@ function ProductDetail() {
 
       <div className="p-6 grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
         <Card className="p-4 space-y-3">
-          <div className="aspect-square rounded-lg bg-muted grid place-items-center overflow-hidden">
-            {p?.image_url ? <img src={p.image_url} className="h-full w-full object-cover" alt="" /> : <Package className="h-16 w-16 text-muted-foreground/40" />}
+          <div className="aspect-square rounded-lg bg-muted overflow-hidden">
+            <ProductImage src={p?.image_url ?? null} alt={p?.name ?? "Produto"} className="h-full w-full object-cover" containerClassName="h-full w-full" fallback={<Package className="h-16 w-16 text-muted-foreground/40" />} />
           </div>
           {p && (
             <>
