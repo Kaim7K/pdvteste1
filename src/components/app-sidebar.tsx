@@ -51,8 +51,8 @@ export function AppSidebar() {
   }
 
   return (
-    <aside className="hidden md:flex flex-col w-64 shrink-0 h-screen sticky top-0 bg-sidebar border-r border-sidebar-border">
-      <div className="px-5 pt-6 pb-5 border-b border-sidebar-border">
+    <aside className="hidden md:flex flex-col w-64 shrink-0 h-screen sticky top-0 bg-sidebar border-r border-sidebar-border shadow-[6px_0_30px_-16px_rgba(0,0,0,0.35)]">
+      <div className="px-5 pt-6 pb-5 border-b border-sidebar-border/80">
         <BrandLogo />
       </div>
 

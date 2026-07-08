@@ -12,7 +12,7 @@ export function PageHeader({
   actions?: ReactNode;
 }) {
   return (
-    <div className="relative border-b border-border/60 bg-background/70 backdrop-blur-xl sticky top-0 z-30">
+    <div className="relative border-b border-border/70 bg-background/85 backdrop-blur-xl sticky top-0 z-30 shadow-[0_8px_24px_-16px_rgba(0,0,0,0.28)]">
       {/* Subtle top glow */}
       <div
         aria-hidden
