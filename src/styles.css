@@ -1,0 +1,309 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * PDV Alameda das Árvores — Dark Premium Design System
+ * Base preta esverdeada + verde-lima de identidade
+ * Todos os valores em oklch
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-glow: var(--primary-glow);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --shadow-glow: 0 0 24px -6px color-mix(in oklab, var(--primary) 45%, transparent);
+  --shadow-card: 0 4px 24px -12px oklch(0 0 0 / 0.6);
+  --shadow-elevated: 0 12px 40px -16px oklch(0 0 0 / 0.7);
+  --shadow-soft: 0 1px 2px oklch(0 0 0 / 0.3), 0 2px 8px -3px oklch(0 0 0 / 0.35);
+  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
+  --gradient-surface: linear-gradient(180deg, color-mix(in oklab, var(--surface) 100%, transparent), color-mix(in oklab, var(--background) 100%, transparent));
+  --gradient-radial: radial-gradient(80% 60% at 50% 0%, color-mix(in oklab, var(--primary) 12%, transparent) 0%, transparent 65%);
+}
+
+:root, .dark {
+  --radius: 0.75rem;
+
+  /* Base dark com nuance esverdeada */
+  --background: oklch(0.155 0.014 155);
+  --foreground: oklch(0.97 0.005 150);
+
+  --surface: oklch(0.195 0.017 155);
+  --surface-2: oklch(0.225 0.018 158);
+
+  --card: oklch(0.205 0.017 155);
+  --card-foreground: oklch(0.97 0.005 150);
+
+  --popover: oklch(0.22 0.018 158);
+  --popover-foreground: oklch(0.97 0.005 150);
+
+  /* Verde-lima de identidade */
+  --primary: oklch(0.84 0.21 140);
+  --primary-foreground: oklch(0.15 0.02 155);
+  --primary-glow: oklch(0.90 0.22 140);
+
+  --secondary: oklch(0.27 0.02 158);
+  --secondary-foreground: oklch(0.95 0.008 150);
+
+  --muted: oklch(0.245 0.017 158);
+  --muted-foreground: oklch(0.68 0.015 155);
+
+  --accent: oklch(0.31 0.05 145);
+  --accent-foreground: oklch(0.97 0.005 150);
+
+  --destructive: oklch(0.60 0.22 25);
+  --destructive-foreground: oklch(0.98 0.005 150);
+
+  --warning: oklch(0.79 0.16 75);
+  --warning-foreground: oklch(0.18 0.02 155);
+
+  --success: oklch(0.76 0.19 145);
+  --success-foreground: oklch(0.15 0.02 155);
+
+  --border: oklch(0.32 0.018 158 / 0.55);
+  --input: oklch(0.245 0.018 158);
+  --ring: oklch(0.84 0.21 140 / 0.65);
+
+  --chart-1: oklch(0.84 0.21 140);
+  --chart-2: oklch(0.72 0.14 175);
+  --chart-3: oklch(0.68 0.16 220);
+  --chart-4: oklch(0.79 0.16 75);
+  --chart-5: oklch(0.62 0.22 25);
+
+  --sidebar: oklch(0.135 0.015 155);
+  --sidebar-foreground: oklch(0.91 0.007 150);
+  --sidebar-primary: oklch(0.84 0.21 140);
+  --sidebar-primary-foreground: oklch(0.15 0.02 155);
+  --sidebar-accent: oklch(0.22 0.02 158);
+  --sidebar-accent-foreground: oklch(0.97 0.005 150);
+  --sidebar-border: oklch(0.28 0.015 158 / 0.55);
+  --sidebar-ring: oklch(0.84 0.21 140 / 0.6);
+}
+
+.light {
+  --radius: 0.75rem;
+
+  --background: oklch(0.985 0.003 150);
+  --foreground: oklch(0.19 0.02 155);
+
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.965 0.006 150);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.19 0.02 155);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.19 0.02 155);
+
+  /* Verde mais profundo para contraste em fundo claro */
+  --primary: oklch(0.62 0.19 142);
+  --primary-foreground: oklch(0.99 0.005 150);
+  --primary-glow: oklch(0.72 0.20 140);
+
+  --secondary: oklch(0.955 0.008 150);
+  --secondary-foreground: oklch(0.22 0.02 155);
+
+  --muted: oklch(0.955 0.007 150);
+  --muted-foreground: oklch(0.48 0.015 155);
+
+  --accent: oklch(0.93 0.05 145);
+  --accent-foreground: oklch(0.25 0.05 145);
+
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(0.99 0.005 150);
+
+  --warning: oklch(0.72 0.17 75);
+  --warning-foreground: oklch(0.20 0.02 155);
+
+  --success: oklch(0.60 0.18 145);
+  --success-foreground: oklch(0.99 0.005 150);
+
+  --border: oklch(0.88 0.008 150 / 0.9);
+  --input: oklch(0.965 0.006 150);
+  --ring: oklch(0.62 0.19 142 / 0.55);
+
+  --chart-1: oklch(0.62 0.19 142);
+  --chart-2: oklch(0.55 0.14 175);
+  --chart-3: oklch(0.55 0.16 220);
+  --chart-4: oklch(0.72 0.17 75);
+  --chart-5: oklch(0.58 0.22 25);
+
+  --sidebar: oklch(0.19 0.02 155);
+  --sidebar-foreground: oklch(0.95 0.005 150);
+  --sidebar-primary: oklch(0.84 0.21 140);
+  --sidebar-primary-foreground: oklch(0.15 0.02 155);
+  --sidebar-accent: oklch(0.26 0.025 155);
+  --sidebar-accent-foreground: oklch(0.97 0.005 150);
+  --sidebar-border: oklch(0.32 0.02 158 / 0.55);
+  --sidebar-ring: oklch(0.84 0.21 140 / 0.6);
+}
+
+html.light { color-scheme: light; }
+html.dark, html:not(.light) { color-scheme: dark; }
+
+
+@layer base {
+  * { border-color: var(--color-border); }
+
+  html, body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    background-image:
+      radial-gradient(60% 40% at 100% 0%, color-mix(in oklab, var(--primary) 6%, transparent) 0%, transparent 60%),
+      radial-gradient(50% 40% at 0% 100%, color-mix(in oklab, var(--primary) 4%, transparent) 0%, transparent 60%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--primary) 40%, transparent);
+    color: var(--foreground);
+  }
+
+  /* Scrollbar polido */
+  * { scrollbar-width: thin; scrollbar-color: color-mix(in oklab, var(--primary) 25%, transparent) transparent; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--primary) 20%, transparent);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in oklab, var(--primary) 40%, transparent);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+
+  /* Autofill dark */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill {
+    -webkit-text-fill-color: var(--foreground);
+    -webkit-box-shadow: 0 0 0px 1000px var(--input) inset;
+    caret-color: var(--foreground);
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  /* Focus polido em todos os controles */
+  :focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--primary) 70%, transparent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@utility glow-primary {
+  box-shadow: var(--shadow-glow);
+}
+
+@utility card-elevated {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+@utility gradient-primary {
+  background-image: var(--gradient-primary);
+}
+
+@utility text-gradient-primary {
+  background-image: var(--gradient-primary);
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@utility hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-elevated);
+    border-color: color-mix(in oklab, var(--primary) 30%, var(--color-border));
+  }
+}
+
+@utility page-fade {
+  animation: fade-in 0.35s ease-out both;
+}
+
+@utility stat-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 1rem 1.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  &:hover {
+    border-color: color-mix(in oklab, var(--primary) 35%, var(--color-border));
+    box-shadow: 0 6px 24px -12px color-mix(in oklab, var(--primary) 40%, transparent);
+  }
+}
+
+/* Print styles for receipt / labels */
+@media print {
+  body * { visibility: hidden; }
+  .receipt, .receipt *,
+  .label-print, .label-print * { visibility: visible; }
+  .receipt { position: absolute; left: 0; top: 0; width: 100%; color: black; background: white; }
+  .label-print { position: absolute; left: 0; top: 0; width: 100%; color: black; background: white; }
+  .label { break-inside: avoid; page-break-inside: avoid; }
+  .no-print { display: none !important; }
+}
+
+#lovable-badge {
+  display: none !important;
+}
